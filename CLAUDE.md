@@ -50,7 +50,22 @@ java OmniaCRM/src/Main.java
 4. **ТР-5.4 — создание заявки идемпотентно с первого дня.** Повторный запрос клиента не создаёт дубликат.
 5. **ТР-5.5 — REST наружу, gRPC внутрь.** Сайты, боты, мобильные клиенты и дашборд ходят по HTTP/REST; сервисы ядра между собой — по gRPC. Мобильный клиент — именно HTTP, не gRPC.
 
-Стек, решённый ранее: Kotlin/Java + Spring Boot, PostgreSQL.
+Стек: Spring Boot, PostgreSQL, Gradle.
+
+### Java и Kotlin — ADR-0001
+
+Язык выбирается на **весь модуль** (ТР-15.1, `docs/adr/0001-java-kotlin-split-by-module.md`):
+
+| Модуль | Язык | Ревью / сборка |
+|---|---|---|
+| `core` — Tenant, Client, Case, Catalog, Tracking, Outbox | Java | `java-reviewer` / `java-build-resolver` |
+| `payment`, `notification`, `telegram-bot` | Kotlin | `kotlin-reviewer` / `kotlin-build-resolver` |
+| `contracts` — OpenAPI, `.proto` | без языка | — |
+
+- Не клади `.java` в Kotlin-модуль и `.kt` в Java-модуль, включая тесты.
+- Модули не делят код: только сгенерированный из `contracts`, остальное — по сети (REST, gRPC).
+- Kotlin-модуль: `kotlin("plugin.spring")`, `jvmToolchain(25)`, при JPA — `kotlin("plugin.jpa")`. `data class` не используется как JPA-сущность.
+- Скрипты сборки — Kotlin DSL (`*.gradle.kts`) везде.
 
 ## Состав системы
 
@@ -83,7 +98,7 @@ java OmniaCRM/src/Main.java
 
 ## Агенты, навыки и команды
 
-Лежат в `.claude/`. Устройство каталога описано в `.claude/README.md`, происхождение — в `.claude/skills/THIRD-PARTY.md`. Все агенты и навыки перенесены из ECC. Четыре агента-ревьюера адаптированы под стек и проверяют инварианты раздела 5 ТЗ. **Навыки остались общего назначения и ТЗ не знают**: если их совет противоречит ТЗ или этому файлу, прав ТЗ. Порог покрытия тестами командой не утверждён — не вводи его сам.
+Лежат в `.claude/`. Устройство каталога описано в `.claude/README.md`, происхождение — в `.claude/skills/THIRD-PARTY.md`. Все агенты и навыки перенесены из ECC. Пять агентов адаптированы под стек и проверяют инварианты раздела 5 ТЗ. **Навыки остались общего назначения и ТЗ не знают**: если их совет противоречит ТЗ или этому файлу, прав ТЗ. Порог покрытия тестами командой не утверждён — не вводи его сам.
 
 Слэш-команд проекта нет: `commands/` пуста намеренно. Хуков тоже нет. Встроенные команды Claude Code доступны всегда: `/code-review`, `/security-review`, `/simplify`, `/init`.
 
@@ -95,8 +110,8 @@ java OmniaCRM/src/Main.java
 | `database-reviewer` | **Высокий** | Любая миграция или схема: ядро, `tenant_id`, JSONB для `Case` (issue #3) |
 | `java-reviewer` | **Высокий** | Ревью Java/Spring Boot кода перед PR |
 | `security-reviewer` | **Высокий** — для Payment | Код, который принимает внешний ввод: REST-эндпоинты, вебхуки платёжного провайдера, аутентификация |
-| `kotlin-build-resolver` | Средний | Только если модули будут на Kotlin. Выбор Kotlin или Java по модулям пока не сделан (ТР-15.1 допускает оба) |
-| `kotlin-reviewer` | Низкий | Ориентирован на Android/KMP/Compose. Для серверного Kotlin годится только общая часть |
+| `kotlin-reviewer` | **Высокий** | Ревью Kotlin-сервисов (`payment`, `notification`, `telegram-bot`) перед PR. Проверяет правила ADR-0001 и идемпотентность вебхуков |
+| `kotlin-build-resolver` | **Высокий** | Падает сборка или компиляция Kotlin-модуля |
 
 Агенты вызываются явно, сами по себе не запускаются. Каждый стартует с чистым контекстом — не гоняй их на мелкие правки. Встроенные агенты: `Explore` — поиск по кодовой базе, `Plan` — план реализации.
 
@@ -108,7 +123,8 @@ java OmniaCRM/src/Main.java
 |---|---|---|
 | **Высокий** — ядро стека | `springboot-patterns`, `java-coding-standards`, `jpa-patterns`, `postgres-patterns`, `database-migrations`, `api-design`, `springboot-tdd`, `springboot-verification` | Spring Boot + PostgreSQL + REST (ТР-15.1, ТР-15.3, ТР-15.4). `api-design` — под issue #4, версионирование `/api/v1` (ТР-5.3) |
 | **Высокий** — процесс | `architecture-decision-records`, `contract-first`, `git-workflow` | ADR — для фиксации решений из ТЗ. `contract-first` — под OpenAPI и `.proto`, но сама схема «контракт до кода» (ТР-15.9) пока НА СОГЛАСОВАНИИ |
-| Средний | `springboot-security`, `hexagonal-architecture`, `kotlin-patterns`, `kotlin-testing` | `springboot-security` становится высоким, когда дойдёт до Payment и аутентификации. Kotlin-навыки — только если модули будут на Kotlin |
+| **Высокий** — Kotlin-модули | `kotlin-patterns`, `kotlin-testing` | Для `payment`, `notification`, `telegram-bot` (ADR-0001). В `kotlin-testing` есть разделы про Ktor — у нас Spring, их пропускай |
+| Средний | `springboot-security`, `hexagonal-architecture` | `springboot-security` становится высоким, когда дойдёт до Payment и аутентификации |
 | Условный | `docker-patterns`, `deployment-patterns` | Docker Compose (ТР-15.8), CI (ТР-15.10) и хостинг (ОВ-1) не утверждены. Не закладывай их как решённое |
 
 `java-coding-standards` и `postgres-patterns` местами пишут про Quarkus и Supabase RLS — к проекту это не относится. Навыки под чужой стек (`backend-patterns`, `error-handling`, `kotlin-coroutines-flows`) и дубли (`tdd-workflow`, `coding-standards`) удалены; не возвращай их без надобности.

@@ -1,6 +1,6 @@
 ---
 name: database-reviewer
-description: PostgreSQL specialist for OmniaCRM: schema design, migrations, queries, indexing, tenant isolation (tenant_id) and the JSONB Case schema. Use when a migration or schema is written or changed, or a query is slow.
+description: "PostgreSQL specialist for OmniaCRM: schema design, migrations, queries, indexing, tenant isolation (tenant_id) and the JSONB Case schema. Use when a migration or schema is written or changed, or a query is slow."
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---

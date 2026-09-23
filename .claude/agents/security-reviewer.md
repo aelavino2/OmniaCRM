@@ -1,6 +1,6 @@
 ---
 name: security-reviewer
-description: Security reviewer for OmniaCRM (Spring Boot): OWASP Top 10, secrets, input validation, authn/authz, tenant isolation, payment webhook verification. Use when code handles external input, authentication, payment webhooks, API endpoints or sensitive data, and before merging such code.
+description: "Security reviewer for OmniaCRM (Spring Boot): OWASP Top 10, secrets, input validation, authn/authz, tenant isolation, payment webhook verification. Use when code handles external input, authentication, payment webhooks, API endpoints or sensitive data, and before merging such code."
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---

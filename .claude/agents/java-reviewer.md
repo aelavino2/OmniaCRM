@@ -1,6 +1,6 @@
 ---
 name: java-reviewer
-description: Java/Spring Boot code reviewer for OmniaCRM: project invariants from docs/tz.md section 5 (tenant_id, flexible Case, /api/v1, idempotency), security, error handling, layering, JPA/PostgreSQL, concurrency. Use to review Java changes before a PR or when asked.
+description: "Java/Spring Boot code reviewer for OmniaCRM: project invariants from docs/tz.md section 5 (tenant_id, flexible Case, /api/v1, idempotency), security, error handling, layering, JPA/PostgreSQL, concurrency. Use to review Java changes before a PR or when asked."
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
