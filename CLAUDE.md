@@ -73,10 +73,45 @@ java OmniaCRM/src/Main.java
 - `main` — опубликованная ветка, соответствует GitHub.
 - `development` — рабочая ветка, разработка идёт здесь.
 - Push и коммиты — только по явной просьбе.
+- Ветка под задачу называется `<номер issue>-<кратко-латиницей>`, например `1-build-system-gradle`. PR идёт в `development`.
+- `Closes #N` в описании PR закрывает issue автоматически, только если PR направлен в ветку по умолчанию (`main`). У PR в `development` issue привязывается вручную: в блоке Development справа на странице PR или issue.
+- Не переименовывай ветку, у которой есть открытый PR: GitHub закроет этот PR, и открыть его заново будет нельзя.
 
 Файлы IDE (`.idea/`, `*.iml`) уже дважды попадали в историю и вычищались. Они закрыты корневым `.gitignore` — не добавляй их обратно и не коммить через `git add -f`.
 
 `gh` CLI установлен и авторизован (аккаунт `aelavino2`, scope `repo`), issues в репозитории включены.
+
+## Агенты, навыки и команды
+
+Лежат в `.claude/`. Устройство каталога описано в `.claude/README.md`, происхождение — в `.claude/skills/THIRD-PARTY.md`. Все агенты и навыки перенесены из ECC. Четыре агента-ревьюера адаптированы под стек и проверяют инварианты раздела 5 ТЗ. **Навыки остались общего назначения и ТЗ не знают**: если их совет противоречит ТЗ или этому файлу, прав ТЗ. Порог покрытия тестами командой не утверждён — не вводи его сам.
+
+Слэш-команд проекта нет: `commands/` пуста намеренно. Хуков тоже нет. Встроенные команды Claude Code доступны всегда: `/code-review`, `/security-review`, `/simplify`, `/init`.
+
+### Агенты (`.claude/agents/`)
+
+| Агент | Приоритет | Когда вызывать |
+|---|---|---|
+| `java-build-resolver` | **Высокий** | Падает Gradle-сборка или компиляция Java. Первый кандидат при заведении сборки (issue #2) |
+| `database-reviewer` | **Высокий** | Любая миграция или схема: ядро, `tenant_id`, JSONB для `Case` (issue #3) |
+| `java-reviewer` | **Высокий** | Ревью Java/Spring Boot кода перед PR |
+| `security-reviewer` | **Высокий** — для Payment | Код, который принимает внешний ввод: REST-эндпоинты, вебхуки платёжного провайдера, аутентификация |
+| `kotlin-build-resolver` | Средний | Только если модули будут на Kotlin. Выбор Kotlin или Java по модулям пока не сделан (ТР-15.1 допускает оба) |
+| `kotlin-reviewer` | Низкий | Ориентирован на Android/KMP/Compose. Для серверного Kotlin годится только общая часть |
+
+Агенты вызываются явно, сами по себе не запускаются. Каждый стартует с чистым контекстом — не гоняй их на мелкие правки. Встроенные агенты: `Explore` — поиск по кодовой базе, `Plan` — план реализации.
+
+### Навыки (`.claude/skills/`)
+
+Навыки подключаются сами, по описанию. Таблица нужна, чтобы понимать, чьему совету доверять.
+
+| Приоритет | Навыки | Комментарий |
+|---|---|---|
+| **Высокий** — ядро стека | `springboot-patterns`, `java-coding-standards`, `jpa-patterns`, `postgres-patterns`, `database-migrations`, `api-design`, `springboot-tdd`, `springboot-verification` | Spring Boot + PostgreSQL + REST (ТР-15.1, ТР-15.3, ТР-15.4). `api-design` — под issue #4, версионирование `/api/v1` (ТР-5.3) |
+| **Высокий** — процесс | `architecture-decision-records`, `contract-first`, `git-workflow` | ADR — для фиксации решений из ТЗ. `contract-first` — под OpenAPI и `.proto`, но сама схема «контракт до кода» (ТР-15.9) пока НА СОГЛАСОВАНИИ |
+| Средний | `springboot-security`, `hexagonal-architecture`, `kotlin-patterns`, `kotlin-testing` | `springboot-security` становится высоким, когда дойдёт до Payment и аутентификации. Kotlin-навыки — только если модули будут на Kotlin |
+| Условный | `docker-patterns`, `deployment-patterns` | Docker Compose (ТР-15.8), CI (ТР-15.10) и хостинг (ОВ-1) не утверждены. Не закладывай их как решённое |
+
+`java-coding-standards` и `postgres-patterns` местами пишут про Quarkus и Supabase RLS — к проекту это не относится. Навыки под чужой стек (`backend-patterns`, `error-handling`, `kotlin-coroutines-flows`) и дубли (`tdd-workflow`, `coding-standards`) удалены; не возвращай их без надобности.
 
 ## Язык
 

@@ -10,14 +10,15 @@
 - Коммит: `2b6e839771e53096d8451a213d40dc64ec8acac0`
 - Дата переноса: 2026-09-22
 
-Перенесённые скиллы:
+Перенесённые скиллы (оставлены только подходящие стеку; `backend-patterns`, `coding-standards`,
+`error-handling`, `kotlin-coroutines-flows`, `tdd-workflow` удалены 2026-09-23 как чужой стек или дубли):
 
-`api-design`, `architecture-decision-records`, `backend-patterns`, `coding-standards`,
+`api-design`, `architecture-decision-records`,
 `contract-first`, `database-migrations`, `deployment-patterns`, `docker-patterns`,
-`error-handling`, `git-workflow`, `hexagonal-architecture`, `java-coding-standards`,
-`jpa-patterns`, `kotlin-coroutines-flows`, `kotlin-patterns`, `kotlin-testing`,
+`git-workflow`, `hexagonal-architecture`, `java-coding-standards`,
+`jpa-patterns`, `kotlin-patterns`, `kotlin-testing`,
 `postgres-patterns`, `springboot-patterns`, `springboot-security`, `springboot-tdd`,
-`springboot-verification`, `tdd-workflow`
+`springboot-verification`
 
 ## Агенты Claude Code в `.claude/agents/`
 
@@ -28,11 +29,17 @@
 
 ## Внесённые изменения
 
-Часть файлов изменена относительно оригинала — примеры и команды сборки приведены
-к Gradle в соответствии с §13 ТЗ, Maven-разделы удалены. Затронуты:
+Часть файлов изменена относительно оригинала:
 
-- `skills/springboot-verification`, `skills/springboot-tdd`, `skills/java-coding-standards`
-- `agents/java-reviewer.md`, `agents/java-build-resolver.md`
+- примеры и команды сборки приведены к Gradle (ТР-15.2), Maven-разделы удалены —
+  `skills/springboot-verification`, `skills/springboot-tdd`, `skills/java-coding-standards`;
+- жёсткий порог покрытия 80% снят, т.к. командой не утверждён — `skills/springboot-tdd`,
+  `skills/springboot-verification`, `skills/kotlin-testing`;
+- агенты адаптированы под Spring Boot + PostgreSQL + Gradle (убраны Quarkus, MongoDB, Maven,
+  npm, Supabase RLS), добавлены инварианты раздела 5 ТЗ, снято «вызывать проактивно» —
+  `agents/java-reviewer.md`, `agents/java-build-resolver.md`, `agents/database-reviewer.md`,
+  `agents/security-reviewer.md`;
+- ссылки на навыки, которых нет в проекте, убраны — `skills/contract-first`, `skills/postgres-patterns`.
 
 В каждом изменённом файле стоит пометка о локальной правке сразу после frontmatter.
 

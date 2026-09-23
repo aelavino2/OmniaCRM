@@ -5,6 +5,8 @@ metadata:
   origin: ECC
 ---
 
+> **Локальная правка OmniaCRM:** жёсткий порог покрытия 80% снят — командой не утверждён. Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
+
 # Kotlin Testing Patterns
 
 Comprehensive Kotlin testing patterns for writing reliable, maintainable tests following TDD methodology with Kotest and MockK.
@@ -25,7 +27,7 @@ Comprehensive Kotlin testing patterns for writing reliable, maintainable tests f
 4. **Run tests (RED)** — Verify the test fails with the expected error
 5. **Implement code (GREEN)** — Write minimal code to pass the test
 6. **Refactor** — Improve the implementation while keeping tests green
-7. **Check coverage** — Run `./gradlew koverHtmlReport` and verify 80%+ coverage
+7. **Check coverage** — Run `./gradlew koverHtmlReport` and check coverage against the team's coverage target (not set yet — ask; do not assume a percentage)
 
 ## Examples
 
@@ -678,7 +680,7 @@ kover {
         }
         verify {
             rule {
-                minBound(80) // Fail build below 80% coverage
+                minBound(/* team target, not set yet */) // Fail build below the agreed coverage
             }
         }
     }
@@ -707,9 +709,9 @@ kover {
 
 | Code Type | Target |
 |-----------|--------|
-| Critical business logic | 100% |
-| Public APIs | 90%+ |
-| General code | 80%+ |
+| Critical business logic | Team target — not set yet |
+| Public APIs | Team target — not set yet |
+| General code | Team target — not set yet |
 | Generated / config code | Exclude |
 
 ### Ktor testApplication Testing

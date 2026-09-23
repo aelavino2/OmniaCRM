@@ -1,15 +1,15 @@
 ---
 name: springboot-tdd
-description: Test-driven development for Spring Boot using JUnit 5, Mockito, MockMvc, Testcontainers, and JaCoCo. Use when adding features, fixing bugs, or refactoring.
+description: Test-driven development for Spring Boot using JUnit 5, Mockito, MockMvc, Testcontainers, and JaCoCo. Use when writing or changing tests for Spring Boot code, or when asked to work test-first.
 metadata:
   origin: ECC
 ---
 
-> **Локальная правка OmniaCRM:** примеры сборки приведены к Gradle (§13 ТЗ, ✅). Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
+> **Локальная правка OmniaCRM:** примеры сборки приведены к Gradle (ТР-15.2); жёсткий порог покрытия 80% снят — командой не утверждён. Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
 
 # Spring Boot TDD Workflow
 
-TDD guidance for Spring Boot services with 80%+ coverage (unit + integration).
+TDD guidance for Spring Boot services (unit + integration). Coverage: the team's coverage target (not set yet — ask; do not assume a percentage).
 
 ## When to Use
 
