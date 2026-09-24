@@ -31,7 +31,7 @@ Before reviewing, read section 5 of `docs/tz.md` and the "Инварианты �
 - **ТР-5.4** — case creation is idempotent: a repeated client request must not create a duplicate.
 - **ТР-5.5** — REST for external consumers (sites, bots, mobile, dashboard); gRPC only between internal services.
 
-Requirements marked НА СОГЛАСОВАНИИ or НЕ ОПРЕДЕЛЕНО in `docs/tz.md` are not decisions: flag code that silently assumes them (e.g. RabbitMQ, Docker Compose) instead of approving it.
+Requirements marked НА СОГЛАСОВАНИИ or НЕ ОПРЕДЕЛЕНО in `docs/tz.md` are not decisions: flag code that silently assumes them (e.g. a specific hosting provider, ОВ-1) instead of approving it.
 
 ## Workflow
 
