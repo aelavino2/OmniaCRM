@@ -29,6 +29,12 @@ not into a checklist here.
 
 <!-- One paragraph describing the observable end state that proves the task is done. -->
 
+## Additional context
+
+<!-- Optional — delete the section if there is nothing to add.
+Technical background that helps to do the task: a proposed algorithm, library
+or pattern, with links to sources (official docs, RFC, the original article). -->
+
 **Spec:** <!-- One or two links to the terms of reference, by anchor:
 [REQ-15.7](https://github.com/aelavino2/OmniaCRM/blob/development/docs/terms-of-reference.md#req-15-7)
 [OQ-10](https://github.com/aelavino2/OmniaCRM/blob/development/docs/terms-of-reference.md#oq-10) -->

@@ -130,7 +130,7 @@ java OmniaCRM/src/Main.java
 | Приоритет | Навыки | Комментарий |
 |---|---|---|
 | **Высокий** — ядро стека | `springboot-patterns`, `java-coding-standards`, `jpa-patterns`, `postgres-patterns`, `database-migrations`, `api-design`, `springboot-tdd`, `springboot-verification` | Spring Boot + PostgreSQL + REST (REQ-15.1, REQ-15.3, REQ-15.4). `api-design` — под issue #4, версионирование `/api/v1` (REQ-5.3) |
-| **Высокий** — процесс | `architecture-decision-records`, `contract-first`, `git-workflow` | ADR — для фиксации решений из ТЗ. `contract-first` — под OpenAPI и `.proto`; схема «контракт до кода» утверждена (REQ-15.9, ADR-0004) |
+| **Высокий** — процесс | `architecture-decision-records`, `contract-first`, `git-workflow`, `github-issues` | `github-issues` — собственный навык проекта: создание issues по шаблону, назначение исполнителя по области, запреты на push и изменения без разрешения. ADR — для фиксации решений из ТЗ. `contract-first` — под OpenAPI и `.proto`; схема «контракт до кода» утверждена (REQ-15.9, ADR-0004) |
 | **Высокий** — Kotlin-модули | `kotlin-patterns`, `kotlin-testing` | Для `payment`, `notification`, `telegram-bot` (ADR-0001). В `kotlin-testing` есть разделы про Ktor — у нас Spring, их пропускай |
 | Средний | `springboot-security`, `hexagonal-architecture` | `springboot-security` становится высоким, когда дойдёт до Payment и аутентификации |
 | Высокий — инфраструктура | `docker-patterns`, `deployment-patterns` | Docker Compose (REQ-15.8) и CI (REQ-15.10) утверждены. Хостинг (OQ-1) не выбран — не закладывай конкретного провайдера |
