@@ -1,0 +1,4 @@
+# Скрипты wrapper: gradlew нужен с LF, иначе не запускается в Unix-средах; gradlew.bat — с CRLF
+/gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary
