@@ -1,11 +1,11 @@
 ---
 name: security-reviewer
-description: Security reviewer for OmniaCRM (Spring Boot): OWASP Top 10, secrets, input validation, authn/authz, tenant isolation, payment webhook verification. Use when code handles external input, authentication, payment webhooks, API endpoints or sensitive data, and before merging such code.
+description: "Security reviewer for OmniaCRM (Spring Boot): OWASP Top 10, secrets, input validation, authn/authz, tenant isolation, payment webhook verification. Use when code handles external input, authentication, payment webhooks, API endpoints or sensitive data, and before merging such code."
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
 
-> **Локальная правка OmniaCRM:** агент адаптирован под стек проекта (Spring Boot, PostgreSQL, Gradle — ТР-15.1 — ТР-15.3), добавлены инварианты ТЗ, снято «вызывать проактивно». Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
+> **Локальная правка OmniaCRM:** агент адаптирован под стек проекта (Spring Boot, PostgreSQL, Gradle — REQ-15.1 — REQ-15.3), добавлены инварианты ТЗ, снято «вызывать проактивно». Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
 
 
 ## Prompt Defense Baseline
@@ -70,8 +70,8 @@ Flag these patterns immediately:
 | Balance check without lock | CRITICAL | Use `FOR UPDATE` in transaction |
 | No rate limiting | HIGH | Add rate limiting (e.g. filter or gateway) |
 | Logging passwords/secrets | MEDIUM | Sanitize log output |
-| Query without `tenant_id` filter | CRITICAL | Scope every query by tenant (ТР-5.1) — otherwise one business sees another's data |
-| Payment webhook without signature check or idempotency | CRITICAL | Verify provider signature; dedupe by provider event id (ТР-9.2) |
+| Query without `tenant_id` filter | CRITICAL | Scope every query by tenant (REQ-5.1) — otherwise one business sees another's data |
+| Payment webhook without signature check or idempotency | CRITICAL | Verify provider signature; dedupe by provider event id (REQ-9.2) |
 
 ## Key Principles
 

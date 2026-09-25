@@ -5,7 +5,7 @@ metadata:
   origin: ECC
 ---
 
-> **Локальная правка OmniaCRM:** примеры сборки приведены к Gradle (ТР-15.2). Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
+> **Локальная правка OmniaCRM:** примеры сборки приведены к Gradle (REQ-15.2). Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
 
 # Java Coding Standards
 

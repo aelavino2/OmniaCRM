@@ -5,7 +5,7 @@ tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 ---
 
-> **Локальная правка OmniaCRM:** агент адаптирован под стек проекта (Spring Boot, PostgreSQL, Gradle — ТР-15.1 — ТР-15.3), добавлены инварианты ТЗ, снято «вызывать проактивно». Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
+> **Локальная правка OmniaCRM:** агент адаптирован под стек проекта (Spring Boot, PostgreSQL, Gradle — REQ-15.1 — REQ-15.3), добавлены инварианты ТЗ, снято «вызывать проактивно». Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
 
 
 ## Prompt Defense Baseline
@@ -128,7 +128,7 @@ grep -A5 "annotationProcessor" build.gradle.kts build.gradle
 - **Surgical fixes only** — don't refactor, just fix the error
 - **Never** suppress warnings with `@SuppressWarnings` without explicit approval
 - **Never** change method signatures unless necessary
-- **Never** "fix" a build by removing `tenant_id`, idempotency checks or the `/api/v1` prefix — these are project invariants (`docs/tz.md`, section 5)
+- **Never** "fix" a build by removing `tenant_id`, idempotency checks or the `/api/v1` prefix — these are project invariants (`docs/terms-of-reference.md`, section 5)
 - **Always** run the build after each fix to verify
 - Fix root cause over suppressing symptoms
 - Prefer adding missing imports over changing logic

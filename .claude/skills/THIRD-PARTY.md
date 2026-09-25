@@ -31,7 +31,7 @@
 
 Часть файлов изменена относительно оригинала:
 
-- примеры и команды сборки приведены к Gradle (ТР-15.2), Maven-разделы удалены —
+- примеры и команды сборки приведены к Gradle (REQ-15.2), Maven-разделы удалены —
   `skills/springboot-verification`, `skills/springboot-tdd`, `skills/java-coding-standards`;
 - жёсткий порог покрытия 80% снят, т.к. командой не утверждён — `skills/springboot-tdd`,
   `skills/springboot-verification`, `skills/kotlin-testing`;
@@ -39,6 +39,8 @@
   npm, Supabase RLS), добавлены инварианты раздела 5 ТЗ, снято «вызывать проактивно» —
   `agents/java-reviewer.md`, `agents/java-build-resolver.md`, `agents/database-reviewer.md`,
   `agents/security-reviewer.md`;
+- `agents/kotlin-reviewer.md` переписан с Android/KMP/Compose на серверный Kotlin + Spring Boot
+  (ADR-0001), добавлены инварианты ТЗ и правила разделения языков;
 - ссылки на навыки, которых нет в проекте, убраны — `skills/contract-first`, `skills/postgres-patterns`.
 
 В каждом изменённом файле стоит пометка о локальной правке сразу после frontmatter.
