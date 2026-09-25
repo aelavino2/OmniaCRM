@@ -24,21 +24,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Состояние репозитория
 
-Кода нет. Есть README, ТЗ и конфигурация Claude Code. `OmniaCRM/src/Main.java` — нетронутый шаблон IntelliJ («Hello and welcome!»), к проекту отношения не имеет. Системы сборки, зависимостей, тестов и слоёв приложения не существует.
+Кода нет. Есть README, ТЗ, конфигурация Claude Code и корень Gradle-сборки без модулей: wrapper, `settings.gradle.kts` и `build-logic/` с convention-плагином `omnia.java-conventions` (Java toolchain 25). Root `build.gradle.kts` нет намеренно: общие настройки модулей живут в `build-logic/`, модуль подключает их через `plugins { id("omnia.java-conventions") }`. `OmniaCRM/src/Main.java` — нетронутый шаблон IntelliJ («Hello and welcome!»), к проекту отношения не имеет.
 
 Практическое следствие: почти любая задача — создание чего-то впервые, а не правка существующего. Не ищи модуль-образец или сложившуюся конвенцию, их нет. Уточняющий вопрос звучит не «где это лежит», а «как мы это решаем».
 
 ## Команды
 
-Сборки нет. Шаблон запускается однофайловым режимом JDK:
+Сборка — только через wrapper, глобальный Gradle не нужен (на Windows — `gradlew.bat`):
 
 ```
-java OmniaCRM/src/Main.java
+./gradlew help                                          # проверить, что сборка конфигурируется
+./gradlew build                                         # собрать и прогнать тесты всех модулей
+./gradlew :<module>:test                                # тесты одного модуля
+./gradlew :<module>:test --tests '<пакет.КлассTest>'    # один тестовый класс
 ```
+
+Пока модулей нет, задач `build` и `test` в корне не существует: `./gradlew build` по сокращению имени запускает `buildEnvironment`. Реальными эти команды станут с первым модулем.
+
+Шаблон IntelliJ запускается однофайловым режимом JDK: `java OmniaCRM/src/Main.java`.
 
 Установлен JDK 25 (LTS), language level проекта — 25.
-
-**Когда появится Gradle-сборка — заменить этот раздел реальными командами (сборка, прогон тестов, прогон одного теста) в том же коммите, который добавляет сборку.** Система сборки выбрана — **Gradle** (REQ-15.2, УТВЕРЖДЕНО). Но самой сборки в репозитории ещё нет: ни `settings.gradle(.kts)`, ни `build.gradle(.kts)`, ни wrapper’а. Пока они не появились, не выдумывай команды и не предполагай, что `gradle`/`./gradlew` здесь работают (глобальный `gradle` в PATH не установлен).
 
 ## Кто работает с системой
 

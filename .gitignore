@@ -12,6 +12,7 @@
 
 # Package files
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 *.war
 *.nar
 *.ear
@@ -25,8 +26,12 @@ replay_pid*
 
 # Build output
 /target/
-/build/
+build/
 /out/
+
+# Gradle
+.gradle/
+.kotlin/
 
 # IntelliJ IDEA
 .idea/
