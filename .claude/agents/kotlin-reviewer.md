@@ -1,6 +1,6 @@
 ---
 name: kotlin-reviewer
-description: "Kotlin/Spring Boot code reviewer for OmniaCRM services (payment, notification, telegram-bot): project invariants from docs/tz.md section 5, ADR-0001 language rules, coroutine safety, Kotlin idioms, Spring/JPA pitfalls in Kotlin, payment webhook idempotency. Use to review Kotlin changes before a PR or when asked."
+description: "Kotlin/Spring Boot code reviewer for OmniaCRM services (payment, notification, telegram-bot): project invariants from docs/terms-of-reference.md section 5, ADR-0001 language rules, coroutine safety, Kotlin idioms, Spring/JPA pitfalls in Kotlin, payment webhook idempotency. Use to review Kotlin changes before a PR or when asked."
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
@@ -23,15 +23,15 @@ You DO NOT refactor or rewrite code — you report findings only.
 
 ## OmniaCRM Invariants (check first)
 
-Before reviewing, read section 5 of `docs/tz.md` and the "Инварианты архитектуры" section of `CLAUDE.md`. Code that violates any of these is **CRITICAL**, regardless of whether it works:
+Before reviewing, read section 5 of `docs/terms-of-reference.md` and the "Инварианты архитектуры" section of `CLAUDE.md`. Code that violates any of these is **CRITICAL**, regardless of whether it works:
 
-- **ТР-5.1** — every table and every entity has `tenant_id`; every query is scoped by tenant. A query or repository method that can return another tenant's rows is a data leak.
-- **ТР-5.2** — `Case` has no business-specific fields, tables or columns (barbershop, tour, marketplace…). Business-specific data lives in a typed JSONB field validated per case type.
-- **ТР-5.3** — public REST endpoints live under `/api/v1/...`.
-- **ТР-5.4** — case creation is idempotent: a repeated client request must not create a duplicate.
-- **ТР-5.5** — REST for external consumers (sites, bots, mobile, dashboard); gRPC only between internal services.
+- **REQ-5.1** — every table and every entity has `tenant_id`; every query is scoped by tenant. A query or repository method that can return another tenant's rows is a data leak.
+- **REQ-5.2** — `Case` has no business-specific fields, tables or columns (barbershop, tour, marketplace…). Business-specific data lives in a typed JSONB field validated per case type.
+- **REQ-5.3** — public REST endpoints live under `/api/v1/...`.
+- **REQ-5.4** — case creation is idempotent: a repeated client request must not create a duplicate.
+- **REQ-5.5** — REST for external consumers (sites, bots, mobile, dashboard); gRPC only between internal services.
 
-Requirements marked НА СОГЛАСОВАНИИ or НЕ ОПРЕДЕЛЕНО in `docs/tz.md` are not decisions: flag code that silently assumes them (e.g. a specific hosting provider, ОВ-1) instead of approving it.
+Requirements marked НА СОГЛАСОВАНИИ or НЕ ОПРЕДЕЛЕНО in `docs/terms-of-reference.md` are not decisions: flag code that silently assumes them (e.g. a specific hosting provider, OQ-1) instead of approving it.
 
 ## Workflow
 
@@ -48,10 +48,10 @@ Requirements marked НА СОГЛАСОВАНИИ or НЕ ОПРЕДЕЛЕНО i
 - **Missing Spring plugins** — no `kotlin("plugin.spring")` (final classes break Spring proxies), no `kotlin("plugin.jpa")` when JPA is used, no `jvmToolchain(25)`
 
 ### Payment & Delivery Correctness (CRITICAL)
-- **Webhook without signature verification** — provider callbacks must be authenticated before any processing (ТР-9.2)
+- **Webhook without signature verification** — provider callbacks must be authenticated before any processing (REQ-9.2)
 - **Webhook not idempotent** — duplicate provider events must not confirm a payment twice; dedupe by provider event id before any state change
 - **Illegal payment state transitions** — model states as a `sealed` hierarchy and handle them with exhaustive `when`; no `else` branch that hides new states
-- **Lost notifications** — an outgoing event dropped on a temporary failure of the receiver violates ТР-14.4; failures must be retried or kept for later delivery
+- **Lost notifications** — an outgoing event dropped on a temporary failure of the receiver violates REQ-14.4; failures must be retried or kept for later delivery
 - **Money as `Double`/`Float`** — use `BigDecimal` or minor units in `Long`
 
 ### Coroutines (HIGH)

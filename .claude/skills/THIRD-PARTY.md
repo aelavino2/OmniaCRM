@@ -31,7 +31,7 @@
 
 Часть файлов изменена относительно оригинала:
 
-- примеры и команды сборки приведены к Gradle (ТР-15.2), Maven-разделы удалены —
+- примеры и команды сборки приведены к Gradle (REQ-15.2), Maven-разделы удалены —
   `skills/springboot-verification`, `skills/springboot-tdd`, `skills/java-coding-standards`;
 - жёсткий порог покрытия 80% снят, т.к. командой не утверждён — `skills/springboot-tdd`,
   `skills/springboot-verification`, `skills/kotlin-testing`;

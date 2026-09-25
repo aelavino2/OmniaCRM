@@ -3,7 +3,7 @@
 **Дата**: YYYY-MM-DD
 **Статус**: proposed | accepted | deprecated | superseded by ADR-NNNN
 **Участники**: [кто принимал решение]
-**Требования ТЗ**: [ТР-x.y, ОВ-x]
+**Требования ТЗ**: [REQ-x.y, OQ-x]
 
 ## Контекст
 

@@ -5,7 +5,7 @@ metadata:
   origin: ECC
 ---
 
-> **Локальная правка OmniaCRM:** примеры сборки приведены к Gradle (ТР-15.2); жёсткий порог покрытия 80% снят — командой не утверждён. Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
+> **Локальная правка OmniaCRM:** примеры сборки приведены к Gradle (REQ-15.2); жёсткий порог покрытия 80% снят — командой не утверждён. Оригинал — ECC 2.2.2 под MIT, см. `.claude/skills/THIRD-PARTY.md`.
 
 # Spring Boot Verification Loop
 
