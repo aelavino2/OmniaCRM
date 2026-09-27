@@ -1,0 +1,1 @@
+-- Baseline: starts the Flyway history; core tables come in later migrations.

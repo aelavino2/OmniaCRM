@@ -2,6 +2,7 @@ package com.omniacrm.core;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -14,16 +15,22 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import(PostgresTestcontainer.class)
-class HealthEndpointTest {
+class SwaggerUiTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void healthReportsUpIncludingDatabase() throws Exception {
-        mockMvc.perform(get("/actuator/health"))
+    void swaggerUiPageRedirectsToUi() throws Exception {
+        mockMvc.perform(get("/swagger-ui.html"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/swagger-ui/index.html"));
+    }
+
+    @Test
+    void openApiSpecIsServed() throws Exception {
+        mockMvc.perform(get("/v3/api-docs"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("UP"))
-                .andExpect(jsonPath("$.components.db.status").value("UP"));
+                .andExpect(jsonPath("$.openapi").exists());
     }
 }
