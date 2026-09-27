@@ -28,5 +28,33 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  rabbitmq:
+    # Тег -management включает веб-интерфейс для просмотра очередей (REQ-13.2)
+    image: rabbitmq:4.3.6-management
+    # RabbitMQ хранит данные в каталоге, названном по имени узла rabbit@<hostname>.
+    # Без фиксированного hostname он менялся бы при пересоздании контейнера,
+    # и данные из volume оказывались бы потеряны
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?задайте RABBITMQ_USER в .env}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?задайте RABBITMQ_PASSWORD в .env}
+    ports:
+      # Только localhost: брокер не должен быть виден из сети
+      - "127.0.0.1:${RABBITMQ_PORT:?задайте RABBITMQ_PORT в .env}:5672"
+      - "127.0.0.1:${RABBITMQ_MANAGEMENT_PORT:?задайте RABBITMQ_MANAGEMENT_PORT в .env}:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      # Проверяет, что открыты все слушатели, включая AMQP (5672) и веб-интерфейс (15672).
+      # ping здесь не подходит: он отвечает на пару секунд раньше, чем поднимается
+      # веб-интерфейс, и контейнер становится healthy, ещё не принимая соединений
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_port_connectivity"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
 volumes:
   postgres-data:
+  rabbitmq-data:
