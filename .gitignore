@@ -52,5 +52,8 @@ bin/
 .DS_Store
 Thumbs.db
 
+# Переменные окружения Docker Compose: пароли, порты (шаблон — .env.example)
+.env
+
 # Claude Code (личные настройки; общие — в .claude/settings.json)
 .claude/settings.local.json
