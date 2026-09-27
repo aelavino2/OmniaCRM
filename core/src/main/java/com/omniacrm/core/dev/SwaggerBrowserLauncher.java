@@ -12,9 +12,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
- * Открывает Swagger UI в браузере, когда приложение готово принимать запросы.
- * Только для локальной разработки: свойство включает задача bootRun,
- * в тестах и контейнерах бина нет.
+ * Dev only: opens Swagger UI in the browser once the app is ready. Enabled by bootRun.
+ * Uses an OS command because Spring Boot runs headless, so java.awt.Desktop is unavailable.
  */
 @Component
 @ConditionalOnProperty(name = "omnia.dev.open-swagger-ui", havingValue = "true")
@@ -28,13 +27,12 @@ class SwaggerBrowserLauncher {
         String url = "http://localhost:" + port + "/swagger-ui.html";
         try {
             new ProcessBuilder(browserCommand(url)).start();
-            log.info("Swagger UI открыт в браузере: {}", url);
+            log.info("Opened Swagger UI in the browser: {}", url);
         } catch (IOException e) {
-            log.warn("Не удалось открыть браузер, откройте вручную: {}", url, e);
+            log.warn("Could not open the browser, open it manually: {}", url, e);
         }
     }
 
-    // java.awt.Desktop не подходит: Spring Boot запускает приложение в headless-режиме
     private static List<String> browserCommand(String url) {
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (os.contains("win")) {

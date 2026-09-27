@@ -1,6 +1,4 @@
-// Общие настройки для всех JVM-модулей: Java toolchain 25 (REQ-15.1).
-// Kotlin-модули тоже подключают этот плагин: плагин Kotlin применяет плагин java,
-// и jvmToolchain берётся из этого же toolchain.
+// Shared settings for every JVM module (Java and Kotlin): Java 25 toolchain and JUnit Platform.
 plugins {
     java
 }

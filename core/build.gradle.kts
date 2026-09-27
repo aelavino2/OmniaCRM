@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    // Версии всех зависимостей Spring Boot берутся из его BOM
     implementation(platform(libs.spring.boot.bom))
 
     implementation(libs.spring.boot.starter.webmvc)
@@ -22,11 +21,9 @@ dependencies {
 }
 
 tasks.bootRun {
-    // Открыть Swagger UI в браузере после старта. Отключить: -PopenSwagger=false
+    // Local run: loads the root .env (real environment wins) and opens Swagger UI; disable with -PopenSwagger=false
     systemProperty("omnia.dev.open-swagger-ui", providers.gradleProperty("openSwagger").getOrElse("true"))
 
-    // Локально core берёт настройки БД из того же .env, что и Docker Compose.
-    // Переменные, уже заданные в окружении, важнее значений из файла.
     val envFile = rootProject.file(".env")
     if (envFile.exists()) {
         envFile.readLines()

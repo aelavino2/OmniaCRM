@@ -1,2 +1,1 @@
--- Начало истории миграций. Таблицы ядра (tenant, client, case…) появятся
--- в следующих миграциях вместе с доменными задачами.
+-- Baseline: starts the Flyway history; core tables come in later migrations.

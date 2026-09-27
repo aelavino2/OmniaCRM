@@ -17,15 +17,10 @@ management:
   endpoints:
     web:
       exposure:
-        # Наружу открыт только health: по нему Docker и мониторинг проверяют,
-        # жив ли сервис (REQ-14.1). Остальные эндпоинты Actuator не нужны
         include: health
   endpoint:
     health:
-      # Показывать статус каждой проверки (db, diskSpace), но без подробностей
-      # вроде версии PostgreSQL
       show-components: always
 
 springdoc:
-  # В документацию попадает только публичный API (REQ-5.3), служебные эндпоинты — нет
   paths-to-match: /api/v1/**
