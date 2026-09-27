@@ -1,26 +1,17 @@
-# Локальная инфраструктура OmniaCRM (REQ-15.8).
-# Перед первым запуском: скопировать .env.example в .env.
-# Запуск: docker compose up -d
-
 name: omnia-crm
 
 services:
   postgres:
     image: postgres:18.6
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:?задайте POSTGRES_DB в .env}
-      POSTGRES_USER: ${POSTGRES_USER:?задайте POSTGRES_USER в .env}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?задайте POSTGRES_PASSWORD в .env}
+      POSTGRES_DB: ${POSTGRES_DB:?}
+      POSTGRES_USER: ${POSTGRES_USER:?}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
     ports:
-      # Только localhost: база не должна быть видна из сети
-      - "127.0.0.1:${POSTGRES_PORT:?задайте POSTGRES_PORT в .env}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:?}:5432"
     volumes:
-      # С PostgreSQL 18 образ хранит данные в /var/lib/postgresql/<версия>/docker,
-      # поэтому volume монтируется в /var/lib/postgresql, а не в .../data
       - postgres-data:/var/lib/postgresql
     healthcheck:
-      # -h 127.0.0.1: во время инициализации временный сервер слушает только сокет,
-      # и проверка через TCP не даёт статус healthy раньше, чем база готова
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
       interval: 5s
       timeout: 5s
@@ -29,25 +20,17 @@ services:
     restart: unless-stopped
 
   rabbitmq:
-    # Тег -management включает веб-интерфейс для просмотра очередей (REQ-13.2)
     image: rabbitmq:4.3.6-management
-    # RabbitMQ хранит данные в каталоге, названном по имени узла rabbit@<hostname>.
-    # Без фиксированного hostname он менялся бы при пересоздании контейнера,
-    # и данные из volume оказывались бы потеряны
     hostname: rabbitmq
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?задайте RABBITMQ_USER в .env}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?задайте RABBITMQ_PASSWORD в .env}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?}
     ports:
-      # Только localhost: брокер не должен быть виден из сети
-      - "127.0.0.1:${RABBITMQ_PORT:?задайте RABBITMQ_PORT в .env}:5672"
-      - "127.0.0.1:${RABBITMQ_MANAGEMENT_PORT:?задайте RABBITMQ_MANAGEMENT_PORT в .env}:15672"
+      - "127.0.0.1:${RABBITMQ_PORT:?}:5672"
+      - "127.0.0.1:${RABBITMQ_MANAGEMENT_PORT:?}:15672"
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
     healthcheck:
-      # Проверяет, что открыты все слушатели, включая AMQP (5672) и веб-интерфейс (15672).
-      # ping здесь не подходит: он отвечает на пару секунд раньше, чем поднимается
-      # веб-интерфейс, и контейнер становится healthy, ещё не принимая соединений
       test: ["CMD", "rabbitmq-diagnostics", "-q", "check_port_connectivity"]
       interval: 10s
       timeout: 10s
