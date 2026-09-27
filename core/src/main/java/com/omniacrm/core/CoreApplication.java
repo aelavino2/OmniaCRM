@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CoreApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CoreApplication.class, args);
+        SpringApplication application = new SpringApplication(CoreApplication.class);
+        application.addInitializers(context -> context.getEnvironment()
+                .setRequiredProperties("POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD"));
+        application.run(args);
     }
 }

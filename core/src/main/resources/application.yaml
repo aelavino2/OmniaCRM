@@ -1,6 +1,14 @@
 spring:
   application:
     name: core
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
 
 server:
   port: 8080
@@ -12,3 +20,8 @@ management:
         # Наружу открыт только health: по нему Docker и мониторинг проверяют,
         # жив ли сервис (REQ-14.1). Остальные эндпоинты Actuator не нужны
         include: health
+  endpoint:
+    health:
+      # Показывать статус каждой проверки (db, diskSpace), но без подробностей
+      # вроде версии PostgreSQL
+      show-components: always
