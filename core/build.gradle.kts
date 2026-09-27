@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.data.jpa)
     implementation(libs.spring.boot.starter.flyway)
+    implementation(libs.springdoc.openapi.starter.webmvc.ui)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.flyway.database.postgresql)
 
@@ -20,9 +21,12 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
-// Локально core берёт настройки БД из того же .env, что и Docker Compose.
-// Переменные, уже заданные в окружении, важнее значений из файла.
 tasks.bootRun {
+    // Открыть Swagger UI в браузере после старта. Отключить: -PopenSwagger=false
+    systemProperty("omnia.dev.open-swagger-ui", providers.gradleProperty("openSwagger").getOrElse("true"))
+
+    // Локально core берёт настройки БД из того же .env, что и Docker Compose.
+    // Переменные, уже заданные в окружении, важнее значений из файла.
     val envFile = rootProject.file(".env")
     if (envFile.exists()) {
         envFile.readLines()
