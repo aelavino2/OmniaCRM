@@ -1,7 +1,27 @@
 server:
   port: 8081
 
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: payment
+  flyway:
+    default-schema: payment
+    schemas: payment
+    create-schemas: true
+
 management:
+  endpoint:
+    health:
+      show-components: always
   endpoints:
     web:
       exposure:
