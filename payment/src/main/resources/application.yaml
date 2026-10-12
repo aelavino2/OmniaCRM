@@ -6,15 +6,16 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   flyway:
-    schemas: payment
     default-schema: payment
+    schemas: payment
+    create-schemas: true
   jpa:
     hibernate:
       ddl-auto: validate
+    open-in-view: false
     properties:
       hibernate:
         default_schema: payment
-    open-in-view: false
 
 server:
   port: 8081
