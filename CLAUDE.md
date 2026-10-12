@@ -27,7 +27,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Кода нет. Есть README, ТЗ, конфигурация Claude Code и корень Gradle-сборки без модулей:
 
 - wrapper и `settings.gradle.kts`;
-- `build-logic/` с convention-плагином `omnia.java-conventions` (Java toolchain 25) — общие настройки модулей, модуль подключает их через `plugins { id("omnia.java-conventions") }`;
+- `build-logic/` с convention-плагинами: `omnia.java-conventions` (Java toolchain 25 для Java- и Kotlin-модулей, JUnit Platform) и `omnia.dotenv` (`bootRun` подхватывает корневой `.env`). Модуль подключает их через `plugins { id("omnia.java-conventions") }`;
 - `gradle/libs.versions.toml` — каталог версий: Spring Boot, плагины Kotlin, стартеры Spring, драйвер PostgreSQL, Testcontainers. **Модуль ссылается на зависимости только через каталог** (`libs.…`), версию в своём build-скрипте не пишет. Версия есть только у BOM `libs.spring.boot.bom`, остальные библиотеки берут её из BOM — модуль подключает его через `implementation(platform(libs.spring.boot.bom))`. Нужна библиотека, которой нет в каталоге, — сначала добавь её в каталог;
 - корневой `build.gradle.kts` — только объявляет плагины из каталога с `apply false`, чтобы модули применяли их одной версии через `alias(libs.plugins.…)`. Настройки модулей сюда не клади, их место — `build-logic/`. В конце файла — закомментированный пример зависимостей модуля.
 
@@ -79,7 +79,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Не клади `.java` в Kotlin-модуль и `.kt` в Java-модуль, включая тесты.
 - Модули не делят код: только сгенерированный из `contracts`, остальное — по сети (REST, gRPC).
-- Kotlin-модуль: `alias(libs.plugins.kotlin.spring)`, `jvmToolchain(25)`, при JPA — `alias(libs.plugins.kotlin.jpa)`. `data class` не используется как JPA-сущность.
+- Kotlin-модуль: `id("omnia.java-conventions")` (toolchain 25 Kotlin берёт из него, `jvmToolchain(25)` в модуле не пишется), `alias(libs.plugins.kotlin.spring)`, при JPA — `alias(libs.plugins.kotlin.jpa)`. `data class` не используется как JPA-сущность.
 - Скрипты сборки — Kotlin DSL (`*.gradle.kts`) везде.
 
 ## Состав системы

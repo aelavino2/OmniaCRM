@@ -1,13 +1,10 @@
 plugins {
     id("omnia.java-conventions")
+    id("omnia.dotenv")
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.kotlin.jpa)
-}
-
-kotlin {
-    jvmToolchain(25)
 }
 
 dependencies {
@@ -25,16 +22,4 @@ dependencies {
     testImplementation(libs.spring.boot.testcontainers)
     testImplementation(libs.testcontainers.postgresql)
     testRuntimeOnly(libs.junit.platform.launcher)
-}
-
-tasks.bootRun {
-    val envFile = rootProject.file(".env")
-    if (envFile.exists()) {
-        envFile.readLines()
-            .map { it.trim() }
-            .filter { it.isNotEmpty() && !it.startsWith("#") && "=" in it }
-            .map { it.split("=", limit = 2) }
-            .filter { (name, _) -> System.getenv(name.trim()) == null }
-            .forEach { (name, value) -> environment(name.trim(), value.trim()) }
-    }
 }

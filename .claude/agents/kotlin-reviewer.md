@@ -45,7 +45,7 @@ Requirements marked НА СОГЛАСОВАНИИ or НЕ ОПРЕДЕЛЕНО i
 ### Module Rules — ADR-0001 (CRITICAL)
 - **Mixed languages** — `.java` files in a Kotlin module (tests included)
 - **Shared code across modules** — a Kotlin module depending on `core` or another service's code; only generated code from `contracts` may be shared, everything else goes over REST/gRPC
-- **Missing Spring plugins** — no `kotlin("plugin.spring")` (final classes break Spring proxies), no `kotlin("plugin.jpa")` when JPA is used, no `jvmToolchain(25)`
+- **Missing Spring plugins** — no `kotlin("plugin.spring")` (final classes break Spring proxies), no `kotlin("plugin.jpa")` when JPA is used, no Java 25 toolchain (it comes from `id("omnia.java-conventions")`; a hardcoded `jvmToolchain(25)` in the module is a magic number)
 
 ### Payment & Delivery Correctness (CRITICAL)
 - **Webhook without signature verification** — provider callbacks must be authenticated before any processing (REQ-9.2)
