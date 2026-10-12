@@ -29,7 +29,7 @@ REQ-15.1 фиксирует стек «Kotlin/Java, Spring Boot», но не г�
 1. Один модуль — один язык, включая тесты.
 2. Общего кода между модулями нет, кроме сгенерированного из `contracts`. Модули общаются только по сети (REST, gRPC, брокер сообщений).
 3. Каждый PR проверяет второй разработчик, в том числе на «чужом» языке.
-4. В Kotlin-модулях подключены `kotlin("plugin.spring")` и `jvmToolchain(25)`; при использовании JPA — ещё `kotlin("plugin.jpa")`.
+4. В Kotlin-модулях подключены `kotlin("plugin.spring")` и toolchain 25 — через convention-плагин `omnia.java-conventions`, без `jvmToolchain(25)` в модуле; при использовании JPA — ещё `kotlin("plugin.jpa")`.
 
 ## Рассмотренные альтернативы
 

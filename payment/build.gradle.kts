@@ -1,16 +1,15 @@
 plugins {
+    id("omnia.java-conventions")
+    id("omnia.dotenv")
+    alias(libs.plugins.spring.boot)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.kotlin.jpa)
-    alias(libs.plugins.spring.boot)
-}
-
-kotlin {
-    jvmToolchain(25)
 }
 
 dependencies {
     implementation(platform(libs.spring.boot.bom))
+
     implementation(libs.spring.boot.starter.webmvc)
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.data.jpa)
@@ -18,16 +17,9 @@ dependencies {
     implementation(libs.kotlin.reflect)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.flyway.database.postgresql)
-}
 
-tasks.bootRun {
-    val envFile = rootProject.file(".env")
-    if (envFile.exists()) {
-        envFile.readLines()
-            .map { it.trim() }
-            .filter { it.isNotEmpty() && !it.startsWith("#") && "=" in it }
-            .map { it.split("=", limit = 2) }
-            .filter { (name, _) -> System.getenv(name.trim()) == null }
-            .forEach { (name, value) -> environment(name.trim(), value.trim()) }
-    }
+    testImplementation(libs.spring.boot.starter.webmvc.test)
+    testImplementation(libs.spring.boot.testcontainers)
+    testImplementation(libs.testcontainers.postgresql)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }

@@ -1,5 +1,6 @@
 plugins {
     id("omnia.java-conventions")
+    id("omnia.dotenv")
     alias(libs.plugins.spring.boot)
 }
 
@@ -21,16 +22,6 @@ dependencies {
 }
 
 tasks.bootRun {
-    // Local run: loads the root .env (real environment wins) and opens Swagger UI; disable with -PopenSwagger=false
+    // Local run opens Swagger UI; disable with -PopenSwagger=false
     systemProperty("omnia.dev.open-swagger-ui", providers.gradleProperty("openSwagger").getOrElse("true"))
-
-    val envFile = rootProject.file(".env")
-    if (envFile.exists()) {
-        envFile.readLines()
-            .map { it.trim() }
-            .filter { it.isNotEmpty() && !it.startsWith("#") && "=" in it }
-            .map { it.split("=", limit = 2) }
-            .filter { (name, _) -> System.getenv(name.trim()) == null }
-            .forEach { (name, value) -> environment(name.trim(), value.trim()) }
-    }
 }

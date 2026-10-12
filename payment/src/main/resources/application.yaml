@@ -1,28 +1,30 @@
-server:
-  port: 8081
-
 spring:
+  application:
+    name: payment
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: none
-    open-in-view: false
-    properties:
-      hibernate:
-        default_schema: payment
   flyway:
     default-schema: payment
     schemas: payment
     create-schemas: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: payment
+
+server:
+  port: 8081
 
 management:
-  endpoint:
-    health:
-      show-components: always
   endpoints:
     web:
       exposure:
         include: health
+  endpoint:
+    health:
+      show-components: always
