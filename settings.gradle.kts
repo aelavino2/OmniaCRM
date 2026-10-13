@@ -11,5 +11,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "omnia-crm"
 
+include("contracts")
 include("core")
 include("payment")

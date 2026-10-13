@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.spring) apply false
     alias(libs.plugins.kotlin.jpa) apply false
+    alias(libs.plugins.openapi.generator) apply false
 }
 
 // Example for a module build.gradle.kts:

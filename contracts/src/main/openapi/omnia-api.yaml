@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: OmniaCRM API
+  version: 1.0.0
+  description: Public REST API of OmniaCRM. Placeholder until the intake API is designed.
+servers:
+  - url: /api/v1
+tags:
+  - name: system
+paths:
+  /ping:
+    get:
+      tags: [system]
+      operationId: ping
+      summary: Check that the API is reachable
+      responses:
+        '200':
+          description: The API is reachable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingResponse'
+components:
+  schemas:
+    PingResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          example: ok
