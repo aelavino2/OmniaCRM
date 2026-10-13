@@ -33,4 +33,11 @@ class SwaggerUiTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi").exists());
     }
+
+    @Test
+    void openApiSpecListsPing() throws Exception {
+        mockMvc.perform(get("/v3/api-docs"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.paths['/api/v1/ping'].get").exists());
+    }
 }
