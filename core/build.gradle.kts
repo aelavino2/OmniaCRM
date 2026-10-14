@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation(platform(libs.spring.boot.bom))
 
+    implementation(project(":contracts"))
     implementation(libs.spring.boot.starter.webmvc)
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.data.jpa)
