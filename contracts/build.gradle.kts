@@ -2,6 +2,7 @@ plugins {
     id("omnia.java-conventions")
     `java-library`
     alias(libs.plugins.openapi.generator)
+    alias(libs.plugins.protobuf)
 }
 
 val generatedOpenApiDir = layout.buildDirectory.dir("generated/openapi")
@@ -42,6 +43,31 @@ dependencies {
     api(libs.jackson.annotations)
     implementation(libs.jakarta.annotation.api)
     compileOnly(libs.jakarta.servlet.api)
+
+    api(libs.protobuf.java)
+    api(libs.grpc.protobuf)
+    api(libs.grpc.stub)
+}
+
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
+    }
+    plugins {
+        create("grpc") {
+            artifact = libs.grpc.protoc.gen.java.get().toString()
+        }
+    }
+    generateProtoTasks {
+        all().configureEach {
+            plugins {
+                // Without it the stubs require javax.annotation.Generated
+                create("grpc") {
+                    option("@generated=omit")
+                }
+            }
+        }
+    }
 }
 
 sourceSets {
