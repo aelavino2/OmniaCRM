@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package omnia.system.v1;
+
+option java_package = "com.omniacrm.contracts.grpc.system.v1";
+option java_multiple_files = true;
+
+// Placeholder until the core-payment service is designed.
+service PingService {
+  rpc Ping(PingRequest) returns (PingResponse);
+}
+
+message PingRequest {
+}
+
+message PingResponse {
+  string status = 1;
+}
